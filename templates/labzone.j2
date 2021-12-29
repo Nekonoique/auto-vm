@@ -1,0 +1,22 @@
+$ORIGIN {{ zone }}.
+$TTL    4h
+@           IN  SOA     DNS-1.{{ zone }}. webmaster.{{ zone }}. (
+        2021111000    ; serial
+        4h              ; slave refresh
+        1h              ; slave retry time in case of a problem
+        2w              ; slave expiriation time
+        4h              ; minimum caching time in case of failed lookups
+        )
+
+
+{% for x in zone_dns %}
+{% if x.isAuthoritative is odd %}          IN  NS      {{x.nom}}.{{ zone }}.{% endif %}
+{% endfor %}
+
+{% for x in zone_dns %}
+{{x.nom}}   IN  A   {{x.IPv4}}
+{% endfor %}
+
+{% for x in zone_dns %}
+{{x.nom}}   IN  AAAA   {{x.IPv6}}
+{% endfor %}

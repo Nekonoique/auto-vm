@@ -1,0 +1,47 @@
+---
+
+- name: Setup Infra
+  hosts: dns
+  remote_user: root
+
+  tasks:
+  - name: Install Bind9
+    ansible.builtin.apt:
+      name: bind9
+  - name: incré
+    run_once: true
+    ansible.builtin.shell: date +%s 
+    register: timestamp
+  - name: debug
+    ansible.builtin.debug: 
+      msg: "{{timestamp.stdout}}"
+  - name: Template a file to /etc/file.conf
+    ansible.builtin.template:
+      src: templates/template.j2
+      dest: /var/cache/bind/named.conf.local
+      owner: root
+      group: root
+      mode: '0644'
+
+
+- name: SetDns
+  hosts: all
+  remote_user: root
+
+  tasks:
+ # - name: Update OS
+  #  ansible.builtin.apt:
+  #    update_cache : yes
+ # - name: Upgrade OS
+   # ansible.builtin.apt:
+  #    upgrade : yes
+
+
+  - name: import_tasks
+    import_tasks :
+      tasks/set_dns.yml
+
+
+
+    
+

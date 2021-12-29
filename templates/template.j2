@@ -1,0 +1,22 @@
+$ORIGIN {{ domain_lab }}.
+$TTL    4h
+@           IN  SOA     DNS-1.{{ domain_lab }}. webmaster.{{ domain_lab }}. (
+        {{ timestamp.stdout }}    ; serial
+        4h              ; slave refresh
+        1h              ; slave retry time in case of a problem
+        2w              ; slave expiriation time
+        4h              ; minimum caching time in case of failed lookups
+        )
+
+
+
+
+
+{% for entry in groups['dns']%}
+                IN  NS   {{ entry }}.{{ domain_lab }}
+{% endfor %}
+
+{% for entry in groups['all'] %}
+{{ entry }} IN  A   {{ hostvars[entry]['ansible_host'] }}
+{% endfor %}
+
