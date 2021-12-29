@@ -29,13 +29,12 @@
   remote_user: root
 
   tasks:
- # - name: Update OS
-  #  ansible.builtin.apt:
-  #    update_cache : yes
- # - name: Upgrade OS
-   # ansible.builtin.apt:
-  #    upgrade : yes
-
+  - name: Update OS
+    ansible.builtin.apt:
+      update_cache : yes
+  - name: Upgrade OS
+    ansible.builtin.apt:
+      upgrade : yes
 
   - name: import_tasks
     import_tasks :
